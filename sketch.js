@@ -1,0 +1,91 @@
+var grid = 50;
+var width = 1366;
+var carGroup1,logGroup1;
+var grassHeight = 100;
+var gameState = "play";
+var carAnimation2, logAnimation, playerAnimation, carAnimation1;
+var school;
+var playerImage, logImage;
+var player1;
+function preload()
+{
+ carAnimation1 = loadAnimation("images/car1.png")
+ carAnimation2 = loadAnimation("images/car2.png")
+ playerAnimation = loadAnimation("images/Player-03.png")
+ logAnimation = loadAnimation("images/log2.png")
+}
+
+function setup() {
+  createCanvas(1366,2700);
+  
+  player1 = new player (width/2, height - 25)
+
+  carGroup1 = new Group();
+  if(carGroup1.isTouching(player.spt)){
+    player.spt.x= width/2
+    player.spt.y= height-75
+  }
+
+  logGroup1 = new Group();
+  if(logGroup1.isTouching(player.spt)){
+    player.spt.x= player.spt.x-3
+  }
+  
+  else if((player.spt.y > height-1550 && player.spt.y < height-1330)||
+         (player.spt.y < height-500 && player.spt.y > height-850) ||
+         (player.spt.y>height)||
+         (player.spt.x<0)||
+         (player.spt.x>width))
+         {
+        player.spt.x=width/2
+        player.spt.y=height-75
+  }
+  
+
+  for (var i=0; i<6; i++){
+    var bottomgrass1 = createSprite(683, height-50-(i*400), width, grassHeight)
+    
+  }
+ if (i%2===0){
+   var road =  createSprite(683, height-150-(i*400)-grassHeight, width, 300)
+   road.shapeColor = "black"
+ }
+ bottomgrass1.shapeColor= "grey"
+
+ for(var i=0; i<40; i++){
+   cars = new Car (2)
+   carGroup1.add(cars.spt)
+ }
+
+ for(i=1; i<logGroup1.length; i++){
+if (logGroup1[i].x<0){
+logGroup1[i].x= width
+}
+ }
+ }
+
+function draw() {
+  background("skyblue");
+  translate(0, -player.spt.y+height-150)
+ 
+
+  drawSprites();
+}
+
+function keyPressed(){
+  if(keyCode == UP_ARROW){
+    player.move(0,-2)
+  }
+
+  else if (keyCode == DOWN_ARROW){
+    player.move(0,2)
+  }
+
+  else if(keyCode == LEFT_ARROW){
+    player.move(-2, 0)
+  }
+
+  else if(keyCode == RIGHT_ARROW){
+    player.move(2,0)
+  }
+}
